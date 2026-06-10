@@ -46,3 +46,15 @@ observer.observe(document.body, {
   childList: true,
   subtree: true
 });
+
+// ON/OFFメッセージ受信
+chrome.runtime.onMessage.addListener(function(message) {
+  if (message.type === 'TOGGLE') {
+    isEnabled = message.enabled;
+    if (isEnabled) {
+      runScan();
+    } else {
+      clearHighlights();
+    }
+  }
+});
