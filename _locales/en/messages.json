@@ -1,0 +1,8 @@
+{
+  "appName": {
+    "message": "MyColor"
+  },
+  "appDescription": {
+    "message": "A Chrome extension to make web browsing comfortable for people with color vision deficiency"
+  }
+}
