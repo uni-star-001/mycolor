@@ -1,5 +1,6 @@
 let highlights = [];
 let isEnabled = true;
+let appliedElements = []; // 適用済み要素を記録
 
 function runScan() {
   if (!isEnabled) return;
@@ -19,18 +20,19 @@ function runScan() {
 
     nodes.forEach(function(node) {
       const el = document.querySelector(node.target[0]);
-      if (el) {
-        el.style.outline = '3px solid #FFD700';
-        el.style.outlineOffset = '2px';
-        highlights.push(el);
+      if (!el) return;
+      if (appliedElements.includes(el)) return; // 適用済みはスキップ
 
-        // クリックでカラーパネルを表示
-        el.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          showColorPanel(el);
-        });
-      }
+      el.style.outline = '3px solid #FFD700';
+      el.style.outlineOffset = '2px';
+      highlights.push(el);
+
+      // クリックでカラーパネルを表示
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        showColorPanel(el);
+      });
     });
   });
 }
@@ -43,8 +45,10 @@ function clearHighlights() {
   highlights = [];
 }
 
-// ページ読み込み後にスキャン実行
-runScan();
+// 保存済み設定を自動適用してからスキャン
+applySavedColors().then(function() {
+  runScan();
+});
 
 // 動的コンテンツ対応（SPA等）
 let debounceTimer = null;
@@ -93,6 +97,10 @@ function showColorPanel(targetEl) {
       <input type="color" id="mycolor-picker" style="width:36px; height:36px; border:none; cursor:pointer; border-radius:6px;">
       <span id="mycolor-hex" style="margin-left:8px; font-size:12px; color:#666;"></span>
     </div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px; color:#888; margin-bottom:6px;">提案色（基準を満たす候補）</div>
+      <div id="mycolor-suggests" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+    </div>
     <div style="display:flex; gap:6px; margin-top:12px;">
       <button id="mycolor-revert" style="flex:1; padding:7px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:12px;">元に戻す</button>
       <button id="mycolor-apply" style="flex:1; padding:7px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:12px; font-weight:500;">適用して保存</button>
@@ -109,6 +117,27 @@ function showColorPanel(targetEl) {
   // 現在の色をセット
   picker.value = rgbToHex(window.getComputedStyle(targetEl).color);
   hexLabel.textContent = picker.value;
+
+  // 提案色を生成
+  const bgColor = window.getComputedStyle(targetEl).backgroundColor;
+  const suggests = generateSuggestColors(picker.value, bgColor);
+  const suggestContainer = document.getElementById('mycolor-suggests');
+  suggests.forEach(function(color) {
+    const chip = document.createElement('div');
+    chip.style.cssText = `
+      display:flex; align-items:center; gap:4px;
+      padding:4px 8px; border-radius:99px;
+      border:1px solid #ddd; cursor:pointer;
+      font-size:11px; color:#666; background:#f8f8f8;
+    `;
+    chip.innerHTML = `<div style="width:11px;height:11px;border-radius:50%;background:${color};"></div>${color}`;
+    chip.addEventListener('click', function() {
+      targetEl.style.color = color;
+      picker.value = color;
+      hexLabel.textContent = color;
+    });
+    suggestContainer.appendChild(chip);
+  });
 
   // リアルタイムプレビュー
   picker.addEventListener('input', function() {
@@ -130,9 +159,22 @@ function showColorPanel(targetEl) {
 
   // 適用して保存
   document.getElementById('mycolor-apply').addEventListener('click', function() {
-    targetEl.style.outline = 'none';
+    targetEl.style.outline = '2px dashed #1D9E75';
+    targetEl.style.outlineOffset = '2px';
+    appliedElements.push(targetEl); // 適用済みリストに追加
+
+    // chrome.storageに保存
+    const siteKey = location.hostname;
+    chrome.storage.sync.get(siteKey, function(data) {
+      const siteData = data[siteKey] || {};
+      const selector = getSelector(targetEl);
+      siteData[selector] = {
+        color: targetEl.style.color
+      };
+      chrome.storage.sync.set({ [siteKey]: siteData });
+    });
+
     panel.remove();
-    // Phase 1-C-6で保存処理を追加
   });
 }
 
@@ -143,6 +185,55 @@ function rgbToHex(rgb) {
   return '#' + result.slice(0,3).map(function(x) {
     return parseInt(x).toString(16).padStart(2, '0');
   }).join('');
+}
+
+// 保存済み色設定を自動適用
+function applySavedColors() {
+  return new Promise(function(resolve) {
+    const siteKey = location.hostname;
+    chrome.storage.sync.get(siteKey, function(data) {
+      const siteData = data[siteKey] || {};
+      Object.keys(siteData).forEach(function(selector) {
+        const el = document.querySelector(selector);
+        if (el) {
+          el.style.color = siteData[selector].color;
+          el.style.outline = '2px dashed #1D9E75';
+          el.style.outlineOffset = '2px';
+          appliedElements.push(el);
+        }
+      });
+      resolve();
+    });
+  });
+}
+
+// セレクター取得
+function getSelector(el) {
+  if (el.id) return '#' + el.id;
+  if (el.className) return el.tagName.toLowerCase() + '.' + el.className.trim().split(/\s+/).join('.');
+  return el.tagName.toLowerCase();
+}
+
+// 提案色生成（chroma.jsを使用）
+function generateSuggestColors(currentColor, bgColor) {
+  const results = [];
+  const bg = chroma(bgColor);
+  const candidates = [
+    chroma(currentColor).darken(1),
+    chroma(currentColor).darken(2),
+    chroma(currentColor).darken(3),
+    chroma(currentColor).brighten(1),
+    chroma(currentColor).brighten(2),
+  ];
+  candidates.forEach(function(c) {
+    try {
+      const ratio = chroma.contrast(c, bg);
+      if (ratio >= 4.5 && results.length < 3) {
+        results.push(c.hex());
+      }
+    } catch(e) {}
+  });
+  return results;
 }
 
 // ON/OFFとGET_ISSUESのメッセージ受信

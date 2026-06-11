@@ -48,4 +48,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // リセットボタン
+  document.getElementById('reset-site').addEventListener('click', function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      const hostname = new URL(tabs[0].url).hostname;
+      chrome.storage.sync.remove(hostname, function() {
+        chrome.tabs.reload(tabs[0].id);
+        window.close();
+      });
+    });
+  });
+
 });
