@@ -4,5 +4,50 @@
   },
   "appDescription": {
     "message": "A Chrome extension to make web browsing comfortable for people with color vision deficiency"
+  },
+  "popupTitle": {
+    "message": "MyColor"
+  },
+  "toggleOn": {
+    "message": "ON"
+  },
+  "toggleOff": {
+    "message": "OFF"
+  },
+  "loading": {
+    "message": "Scanning..."
+  },
+  "noIssues": {
+    "message": "No issues found ✓"
+  },
+  "notSupported": {
+    "message": "Not available on this page"
+  },
+  "resetSite": {
+    "message": "Reset settings for this site"
+  },
+  "panelTitle": {
+    "message": "Change color"
+  },
+  "panelColorLabel": {
+    "message": "Choose a color"
+  },
+  "panelSuggestLabel": {
+    "message": "Suggested colors (meet contrast standards)"
+  },
+  "panelRevert": {
+    "message": "Revert"
+  },
+  "panelApply": {
+    "message": "Apply & Save"
+  },
+  "disclaimerTitle": {
+    "message": "Welcome to MyColor"
+  },
+  "disclaimer": {
+    "message": "・This tool is designed to make your web browsing more comfortable.\n・Areas with insufficient contrast are highlighted with a yellow border, and you can change them to colors that work best for you.\n・Color perception varies from person to person, so please use your own judgment when applying changes.\n\n⚠️ Do not use this tool for medical or safety-critical decisions."
+  },
+  "disclaimerClose": {
+    "message": "Close"
   }
 }

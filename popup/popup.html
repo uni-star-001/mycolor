@@ -8,17 +8,23 @@
 </head>
 <body>
   <div class="header">
-    <span class="title">MyColor</span>
+    <span class="title" data-i18n="popupTitle">MyColor</span>
     <label class="toggle-wrap">
       <input type="checkbox" id="toggle" checked>
-      <span class="toggle-label">ON</span>
+      <span class="toggle-label" data-i18n="toggleOn">ON</span>
     </label>
   </div>
   <div id="issue-list">
-    <p class="loading">スキャン中...</p>
+    <p class="loading" data-i18n="loading">スキャン中...</p>
   </div>
   <div class="footer">
-    <button id="reset-site">このサイトの設定をリセット</button>
+    <button id="reset-site" data-i18n="resetSite">このサイトの設定をリセット</button>
+  </div>
+  <div id="disclaimer-overlay" style="display:none;">
+    <div id="disclaimer-box">
+      <p id="disclaimer-text"></p>
+      <button id="disclaimer-close"></button>
+    </div>
   </div>
   <script src="popup.js"></script>
 </body>

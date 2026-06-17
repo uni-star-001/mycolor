@@ -4,5 +4,50 @@
   },
   "appDescription": {
     "message": "色覚特性のある方のWeb閲覧を快適にするChrome拡張機能"
+  },
+  "popupTitle": {
+    "message": "MyColor"
+  },
+  "toggleOn": {
+    "message": "ON"
+  },
+  "toggleOff": {
+    "message": "OFF"
+  },
+  "loading": {
+    "message": "スキャン中..."
+  },
+  "noIssues": {
+    "message": "問題は見つかりませんでした ✓"
+  },
+  "notSupported": {
+    "message": "このページでは動作しません"
+  },
+  "resetSite": {
+    "message": "このサイトの設定をリセット"
+  },
+  "panelTitle": {
+    "message": "色を変更"
+  },
+  "panelColorLabel": {
+    "message": "色を選ぶ"
+  },
+  "panelSuggestLabel": {
+    "message": "提案色（基準を満たす候補）"
+  },
+  "panelRevert": {
+    "message": "元に戻す"
+  },
+  "panelApply": {
+    "message": "適用して保存"
+  },
+  "disclaimerTitle": {
+    "message": "はじめに"
+  },
+  "disclaimer": {
+    "message": "・このツールはあなたのWebブラウジングをより快適にするためのものです。\n・ページ内のコントラスト不足の箇所を黄色い枠で表示し、あなた自身が見やすい色に変えることができます。\n・色の見え方は人によって異なるため、調整結果はあなた自身の判断でお使いください。\n\n⚠️ 医療・安全に関わる重要な判断には使用しないでください。"
+  },
+  "disclaimerClose": {
+    "message": "閉じる"
   }
 }

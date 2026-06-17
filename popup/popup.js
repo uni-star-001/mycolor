@@ -3,11 +3,40 @@ document.addEventListener('DOMContentLoaded', function() {
   const toggleLabel = document.querySelector('.toggle-label');
   const issueList = document.getElementById('issue-list');
 
+  // i18n対応
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    const key = el.getAttribute('data-i18n');
+    const message = chrome.i18n.getMessage(key);
+    if (message) el.textContent = message;
+  });
+
+
+  // 免責表示（初回のみ）
+  chrome.storage.sync.get('disclaimerShown', function(data) {
+    if (!data.disclaimerShown) {
+      const overlay = document.getElementById('disclaimer-overlay');
+      const text = document.getElementById('disclaimer-text');
+      const closeBtn = document.getElementById('disclaimer-close');
+      const title = document.createElement('div');
+      title.style.cssText = 'font-weight:500; font-size:14px; margin-bottom:10px;';
+      title.textContent = chrome.i18n.getMessage('disclaimerTitle');
+      text.parentNode.insertBefore(title, text);
+      text.textContent = chrome.i18n.getMessage('disclaimer');
+      text.style.whiteSpace = 'pre-line';
+      closeBtn.textContent = chrome.i18n.getMessage('disclaimerClose');
+      overlay.style.display = 'flex';
+      closeBtn.addEventListener('click', function() {
+        overlay.style.display = 'none';
+        chrome.storage.sync.set({ disclaimerShown: true });
+      });
+    }
+  });
+
   // 現在のタブに問題一覧をリクエスト
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_ISSUES' }, function(response) {
       if (chrome.runtime.lastError || !response) {
-        issueList.innerHTML = '<p class="no-issues">このページでは動作しません</p>';
+        issueList.innerHTML = `<p class="no-issues">${chrome.i18n.getMessage('notSupported')}</p>`;
         return;
       }
       displayIssues(response.issues);
@@ -17,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // ON/OFFトグル
   toggle.addEventListener('change', function() {
     const enabled = toggle.checked;
-    toggleLabel.textContent = enabled ? 'ON' : 'OFF';
+    toggleLabel.textContent = enabled ? chrome.i18n.getMessage('toggleOn') : chrome.i18n.getMessage('toggleOff');
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { type: 'TOGGLE', enabled: enabled });
     });
@@ -25,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function displayIssues(issues) {
     if (!issues || issues.length === 0) {
-      issueList.innerHTML = '<p class="no-issues">問題は見つかりませんでした ✓</p>';
+      issueList.innerHTML = `<p class="no-issues">${chrome.i18n.getMessage('noIssues')}</p>`;
       return;
     }
     const html = issues.map(function(issue, index) {
