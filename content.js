@@ -1,3 +1,7 @@
+if (window.location.hostname === 'uni-star-001.github.io') {
+  // MyColor自身のページでは何もしない
+} else {
+
 let highlights = [];
 let isEnabled = true;
 let appliedElements = []; // 適用済み要素を記録
@@ -290,3 +294,5 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
   return true;
 });
+
+} // end else
