@@ -315,6 +315,21 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     }
   }
 
+  if (message.type === 'UNFOCUS_ELEMENT') {
+    const el = highlights[message.index];
+    if (el) {
+      el.style.outline = '3px solid #FFD700';
+    }
+  }
+
+  if (message.type === 'OPEN_PANEL') {
+    const el = highlights[message.index];
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showColorPanel(el);
+    }
+  }
+
   return true;
 });
 

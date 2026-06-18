@@ -65,12 +65,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }).join('');
     issueList.innerHTML = html;
 
-    // クリックで該当要素にスクロール
+    // マウスオーバーで赤枠プレビュー・マウスアウトで黄色枠に戻す
     document.querySelectorAll('.issue-item').forEach(function(item) {
-      item.addEventListener('click', function() {
+      item.addEventListener('mouseenter', function() {
         const index = parseInt(item.dataset.index);
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
           chrome.tabs.sendMessage(tabs[0].id, { type: 'FOCUS_ELEMENT', index: index });
+        });
+      });
+
+      item.addEventListener('mouseleave', function() {
+        const index = parseInt(item.dataset.index);
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, { type: 'UNFOCUS_ELEMENT', index: index });
+        });
+      });
+
+      // クリックでカラーパネルを直接開く
+      item.addEventListener('click', function() {
+        const index = parseInt(item.dataset.index);
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, { type: 'OPEN_PANEL', index: index });
         });
         window.close();
       });
