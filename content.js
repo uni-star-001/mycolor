@@ -95,14 +95,14 @@ function showColorPanel(targetEl) {
 
   panel.innerHTML = `
     <div style="font-weight:500; margin-bottom:4px;">色を変更</div>
-    <div style="font-size:11px; color:#888; margin-bottom:12px;">対象：${targetEl.tagName.toLowerCase()}</div>
+    <div style="font-size:11px; color:#595959; margin-bottom:12px;">対象：${targetEl.tagName.toLowerCase()}</div>
     <div style="margin-bottom:10px;">
-      <div style="font-size:11px; color:#888; margin-bottom:4px;">色を選ぶ</div>
+      <div style="font-size:11px; color:#595959; margin-bottom:4px;">色を選ぶ</div>
       <input type="color" id="mycolor-picker" style="width:36px; height:36px; border:none; cursor:pointer; border-radius:6px;">
-      <span id="mycolor-hex" style="margin-left:8px; font-size:12px; color:#666;"></span>
+      <span id="mycolor-hex" style="margin-left:8px; font-size:12px; color:#595959;"></span>
     </div>
     <div style="margin-bottom:12px;">
-      <div style="font-size:11px; color:#888; margin-bottom:6px;">提案色（基準を満たす候補）</div>
+      <div style="font-size:11px; color:#595959; margin-bottom:6px;">提案色（基準を満たす候補）</div>
       <div id="mycolor-suggests" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
     </div>
     <div style="display:flex; gap:6px; margin-top:12px;">
