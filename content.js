@@ -222,21 +222,40 @@ function getSelector(el) {
 function generateSuggestColors(currentColor, bgColor) {
   const results = [];
   const bg = chroma(bgColor);
-  const candidates = [
+
+  // darken方向（最優先）
+  const darkenCandidates = [
     chroma(currentColor).darken(1),
     chroma(currentColor).darken(2),
     chroma(currentColor).darken(3),
+    chroma(currentColor).darken(4),
+  ];
+
+  // brighten方向（補助）
+  const brightenCandidates = [
     chroma(currentColor).brighten(1),
     chroma(currentColor).brighten(2),
+    chroma(currentColor).brighten(3),
   ];
-  candidates.forEach(function(c) {
+
+  // darkenから最大2つ
+  darkenCandidates.forEach(function(c) {
     try {
-      const ratio = chroma.contrast(c, bg);
-      if (ratio >= 4.5 && results.length < 3) {
+      if (chroma.contrast(c, bg) >= 4.5 && results.length < 2) {
         results.push(c.hex());
       }
     } catch(e) {}
   });
+
+  // brightenから最大1つ（darkenと重複しない）
+  brightenCandidates.forEach(function(c) {
+    try {
+      if (chroma.contrast(c, bg) >= 4.5 && results.length < 3) {
+        results.push(c.hex());
+      }
+    } catch(e) {}
+  });
+
   return results;
 }
 
