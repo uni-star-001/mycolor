@@ -4,13 +4,17 @@ if (window.location.hostname === 'uni-star-001.github.io') {
 
 let highlights = [];
 let isEnabled = true;
+let isScanning = false;
 let appliedElements = []; // 適用済み要素を記録
 
 function runScan() {
   if (!isEnabled) return;
+  if (isScanning) return;
+  isScanning = true;
   clearHighlights();
 
   axe.run({ runOnly: ['color-contrast'] }).then(function(results) {
+    isScanning = false;
     const violations = results.violations;
     if (violations.length === 0) {
       chrome.runtime.sendMessage({ type: 'UPDATE_BADGE', count: 0 });
