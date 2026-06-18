@@ -59,7 +59,10 @@ body {
 }
 
 .issue-item:hover {
-  background: #f8f8f6;
+  background: #e8f0fb;
+  cursor: pointer;
+  border-left: 3px solid #005BAC;
+  padding-left: 13px;
 }
 
 .issue-name {
