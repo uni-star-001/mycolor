@@ -49,5 +49,12 @@
   },
   "disclaimerClose": {
     "message": "Close"
-  }
+  },
+  "elementText": { "message": "Text" },
+  "elementLink": { "message": "Link" },
+  "elementButton": { "message": "Button" },
+  "elementInput": { "message": "Input" },
+  "elementHeading": { "message": "Heading" },
+  "elementLabel": { "message": "Label" },
+  "elementListItem": { "message": "List item" }
 }

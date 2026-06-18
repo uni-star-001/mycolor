@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const html = issues.map(function(issue, index) {
       return `<div class="issue-item" data-index="${index}">
         <span class="issue-name">${issue.name}</span>
-        <span class="issue-ratio">${issue.ratio}</span>
+        <span class="issue-ratio">⚠ ${issue.ratio}</span>
       </div>`;
     }).join('');
     issueList.innerHTML = html;

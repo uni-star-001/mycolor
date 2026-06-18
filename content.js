@@ -255,8 +255,18 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         return;
       }
       const issues = violations[0].nodes.map(function(node) {
+        const el = document.querySelector(node.target[0]);
+        const tagName = el ? el.tagName.toLowerCase() : 'element';
+        const tagToKey = {
+          'p': 'elementText', 'span': 'elementText', 'div': 'elementText',
+          'a': 'elementLink', 'button': 'elementButton', 'input': 'elementInput',
+          'h1': 'elementHeading', 'h2': 'elementHeading', 'h3': 'elementHeading',
+          'h4': 'elementHeading', 'h5': 'elementHeading', 'h6': 'elementHeading',
+          'label': 'elementLabel', 'li': 'elementListItem'
+        };
+        const typeLabel = chrome.i18n.getMessage(tagToKey[tagName] || 'elementText');
         return {
-          name: node.target[0],
+          name: typeLabel,
           ratio: node.any[0]?.data?.contrastRatio
             ? node.any[0].data.contrastRatio.toFixed(1) + ':1'
             : '基準未満'

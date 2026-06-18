@@ -49,5 +49,12 @@
   },
   "disclaimerClose": {
     "message": "閉じる"
-  }
+  },
+  "elementText": { "message": "テキスト" },
+  "elementLink": { "message": "リンク" },
+  "elementButton": { "message": "ボタン" },
+  "elementInput": { "message": "入力欄" },
+  "elementHeading": { "message": "見出し" },
+  "elementLabel": { "message": "ラベル" },
+  "elementListItem": { "message": "リスト項目" }
 }
