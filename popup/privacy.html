@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyColor – Privacy Policy / プライバシーポリシー</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --accent: #f5c842;
+      --accent-dim: rgba(245, 200, 66, 0.12);
+      --font-display: 'Georgia', serif;
+      --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --max-w: 720px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.75;
+      padding: 0 24px 80px;
+    }
+    header {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      text-decoration: none;
+    }
+    .logo-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .logo-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: normal;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .subtitle { color: var(--text-muted); font-size: 14px; }
+    .lang-toggle { display: flex; gap: 8px; margin-top: 20px; }
+    .lang-btn {
+      padding: 6px 16px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    main { max-width: var(--max-w); margin: 0 auto; }
+    .content { display: none; }
+    .content.active { display: block; }
+    section {
+      padding: 36px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-child { border-bottom: none; }
+    h2 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    p { color: var(--text); margin-bottom: 12px; }
+    p:last-child { margin-bottom: 0; }
+    .highlight {
+      background: var(--accent-dim);
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+    }
+    .highlight p { color: var(--text); margin: 0; font-size: 15px; }
+    ul { list-style: none; margin: 12px 0; }
+    ul li {
+      padding: 6px 0 6px 20px;
+      position: relative;
+      color: var(--text);
+    }
+    ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245, 200, 66, 0.3);
+      transition: border-color 0.15s;
+    }
+    a:hover { border-color: var(--accent); }
+    footer {
+      max-width: var(--max-w);
+      margin: 48px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #fafafa;
+        --surface: #fff;
+        --border: #e0e0e0;
+        --text: #111;
+        --text-muted: #666;
+        --accent: #c8a000;
+        --accent-dim: rgba(200, 160, 0, 0.08);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">
+    <div class="logo-dot"></div>
+    <span class="logo-name">MyColor</span>
+  </a>
+  <h1 id="page-title">Privacy Policy</h1>
+  <p class="subtitle" id="page-subtitle">Last updated: June 2026</p>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en', this)">English</button>
+    <button class="lang-btn" onclick="setLang('ja', this)">日本語</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="content active" id="content-en">
+    <section>
+      <h2>Core Principle</h2>
+      <div class="highlight">
+        <p>MyColor does not collect or transmit any user data. All processing happens entirely within your browser.</p>
+      </div>
+      <p>This Privacy Policy describes how the Chrome extension "MyColor" (the "Extension") handles data.</p>
+    </section>
+    <section>
+      <h2>Data We Store</h2>
+      <p>The Extension only handles the following data:</p>
+      <ul>
+        <li>Your color settings per website (text color, background color, etc.)</li>
+        <li>The ON/OFF state of the extension</li>
+      </ul>
+      <p>This data is stored <strong>only in your browser (chrome.storage.sync)</strong> and is never sent to any external server.</p>
+    </section>
+    <section>
+      <h2>Data We Never Collect</h2>
+      <ul>
+        <li>URLs or content of websites you visit</li>
+        <li>Personal information (name, email address, etc.)</li>
+        <li>Usage statistics, access logs, or analytics</li>
+        <li>Crash reports or error logs</li>
+      </ul>
+    </section>
+    <section>
+      <h2>External Communication</h2>
+      <p>The Extension makes no external network requests. All libraries used (axe-core, chroma.js) are bundled within the extension itself. No content is loaded from CDNs or external sources.</p>
+    </section>
+    <section>
+      <h2>Permissions Requested</h2>
+      <ul>
+        <li><strong>activeTab</strong>: To detect contrast issues on the current page</li>
+        <li><strong>storage</strong>: To save your color settings in the browser</li>
+        <li><strong>scripting</strong>: To detect and modify elements on the page</li>
+      </ul>
+      <p>No additional permissions are requested.</p>
+    </section>
+    <section>
+      <h2>Data Retention</h2>
+      <p>Stored data can be deleted by uninstalling the extension or using the built-in reset feature. If synced to a Google account, data can also be managed through Google's storage settings.</p>
+    </section>
+    <section>
+      <h2>Open Source</h2>
+      <p>All of MyColor's code is publicly available on GitHub. You can verify its behavior yourself.</p>
+      <p><a href="https://github.com/uni-star-001/mycolor" target="_blank" rel="noopener">github.com/uni-star-001/mycolor</a></p>
+    </section>
+    <section>
+      <h2>Policy Changes</h2>
+      <p>If this policy changes, this page will be updated. For significant changes, a note will also be included in the extension's update release notes.</p>
+    </section>
+    <section>
+      <h2>Contact</h2>
+      <p>For questions, please open an issue on GitHub.</p>
+      <p><a href="https://github.com/uni-star-001/mycolor/issues" target="_blank" rel="noopener">github.com/uni-star-001/mycolor/issues</a></p>
+    </section>
+  </div>
+
+  <div class="content" id="content-ja">
+    <section>
+      <h2>基本方針</h2>
+      <div class="highlight">
+        <p>MyColorは、ユーザーのデータを一切収集・送信しません。すべての処理はあなたのブラウザ上だけで完結します。</p>
+      </div>
+      <p>このプライバシーポリシーは、Chrome拡張機能「MyColor」（以下「本ツール」）の利用に関するデータの取り扱いについて説明します。</p>
+    </section>
+    <section>
+      <h2>保存するデータ</h2>
+      <p>本ツールは以下のデータのみを扱います。</p>
+      <ul>
+        <li>あなたが設定したサイトごとの色設定（テキスト色・背景色など）</li>
+        <li>拡張機能のON/OFFの状態</li>
+      </ul>
+      <p>これらのデータは <strong>あなたのブラウザ内（chrome.storage.sync）にのみ保存</strong> され、外部のサーバーには一切送信されません。</p>
+    </section>
+    <section>
+      <h2>収集しないデータ</h2>
+      <ul>
+        <li>閲覧したWebサイトのURL・コンテンツ</li>
+        <li>個人を特定できる情報（氏名・メールアドレスなど）</li>
+        <li>使用状況・アクセスログ・分析データ</li>
+        <li>クラッシュレポートやエラーログ</li>
+      </ul>
+    </section>
+    <section>
+      <h2>外部への通信</h2>
+      <p>本ツールは外部サーバーへの通信を一切行いません。使用するライブラリ（axe-core・chroma.js）はすべて拡張機能内に同梱されており、CDNなど外部からの読み込みは行いません。</p>
+    </section>
+    <section>
+      <h2>要求する権限</h2>
+      <ul>
+        <li><strong>activeTab</strong>：現在表示中のページのコントラストを検出するため</li>
+        <li><strong>storage</strong>：色設定をブラウザに保存するため</li>
+        <li><strong>scripting</strong>：ページ内の要素を検出・変更するため</li>
+      </ul>
+      <p>これ以上の権限は要求しません。</p>
+    </section>
+    <section>
+      <h2>データの保存期間</h2>
+      <p>保存されたデータは、拡張機能をアンインストールするか、設定リセット機能を使用することで削除できます。Googleアカウントに同期している場合は、Googleのストレージ設定からも管理できます。</p>
+    </section>
+    <section>
+      <h2>オープンソース</h2>
+      <p>MyColorのすべてのコードはGitHubで公開されています。動作を自分で確認することができます。</p>
+      <p><a href="https://github.com/uni-star-001/mycolor" target="_blank" rel="noopener">github.com/uni-star-001/mycolor</a></p>
+    </section>
+    <section>
+      <h2>ポリシーの変更</h2>
+      <p>このポリシーを変更する場合、このページを更新します。重要な変更がある場合は、拡張機能のアップデートノートにも記載します。</p>
+    </section>
+    <section>
+      <h2>お問い合わせ</h2>
+      <p>ご質問はGitHubのIssueからお寄せください。</p>
+      <p><a href="https://github.com/uni-star-001/mycolor/issues" target="_blank" rel="noopener">github.com/uni-star-001/mycolor/issues</a></p>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 UNISTA · MyColor · <a href="https://github.com/uni-star-001/mycolor" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
+
+<script>
+  function setLang(lang, btn) {
+    document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('content-' + lang).classList.add('active');
+    btn.classList.add('active');
+    if (lang === 'ja') {
+      document.getElementById('page-title').textContent = 'プライバシーポリシー';
+      document.getElementById('page-subtitle').textContent = '最終更新：2026年6月';
+      document.documentElement.lang = 'ja';
+    } else {
+      document.getElementById('page-title').textContent = 'Privacy Policy';
+      document.getElementById('page-subtitle').textContent = 'Last updated: June 2026';
+      document.documentElement.lang = 'en';
+    }
+  }
+</script>
+
+</body>
+</html>
