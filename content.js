@@ -309,9 +309,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       el.style.outline = '4px solid #FF4500';
-      setTimeout(function() {
-        el.style.outline = '3px solid #FFD700';
-      }, 1500);
     }
   }
 
