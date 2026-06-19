@@ -50,6 +50,7 @@
   "disclaimerClose": {
     "message": "Close"
   },
+  "panelOpenWarning": { "message": "Please close the color panel first" },
   "elementText": { "message": "Text" },
   "elementLink": { "message": "Link" },
   "elementButton": { "message": "Button" },

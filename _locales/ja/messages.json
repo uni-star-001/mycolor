@@ -50,6 +50,7 @@
   "disclaimerClose": {
     "message": "閉じる"
   },
+  "panelOpenWarning": { "message": "色変更パネルを閉じてから操作してください" },
   "elementText": { "message": "テキスト" },
   "elementLink": { "message": "リンク" },
   "elementButton": { "message": "ボタン" },

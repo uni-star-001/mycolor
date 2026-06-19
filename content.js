@@ -325,8 +325,14 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     const el = highlights[message.index];
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.outline = '4px solid #FF4500';
       showColorPanel(el);
     }
+  }
+
+  if (message.type === 'CHECK_PANEL_OPEN') {
+    sendResponse({ panelOpen: !!document.getElementById('mycolor-panel') });
+    return true;
   }
 });
 

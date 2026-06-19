@@ -34,12 +34,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 現在のタブに問題一覧をリクエスト
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_ISSUES' }, function(response) {
-      if (chrome.runtime.lastError || !response) {
-        issueList.innerHTML = `<p class="no-issues">${chrome.i18n.getMessage('notSupported')}</p>`;
+    chrome.tabs.sendMessage(tabs[0].id, { type: 'CHECK_PANEL_OPEN' }, function(panelResponse) {
+      if (panelResponse && panelResponse.panelOpen) {
+        issueList.innerHTML = `<p class="no-issues">${chrome.i18n.getMessage('panelOpenWarning')}</p>`;
         return;
       }
-      displayIssues(response.issues);
+      chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_ISSUES' }, function(response) {
+        if (chrome.runtime.lastError || !response) {
+          issueList.innerHTML = `<p class="no-issues">${chrome.i18n.getMessage('notSupported')}</p>`;
+          return;
+        }
+        displayIssues(response.issues);
+      });
     });
   });
 
