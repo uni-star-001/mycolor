@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // マウスオーバーで赤枠プレビュー・マウスアウトで黄色枠に戻す
     document.querySelectorAll('.issue-item').forEach(function(item) {
+      let isClicked = false; // クリック済みフラグ（UNFOCUSの誤送信を防ぐ）
+
       item.addEventListener('mouseenter', function() {
         const index = parseInt(item.dataset.index);
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
@@ -81,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       item.addEventListener('mouseleave', function() {
+        if (isClicked) return; // クリック後はUNFOCUSを送らない
         const index = parseInt(item.dataset.index);
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
           chrome.tabs.sendMessage(tabs[0].id, { type: 'UNFOCUS_ELEMENT', index: index });
@@ -89,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // クリックでカラーパネルを直接開く
       item.addEventListener('click', function() {
+        isClicked = true; // フラグを立てる
         const index = parseInt(item.dataset.index);
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
           chrome.tabs.sendMessage(tabs[0].id, { type: 'OPEN_PANEL', index: index });
