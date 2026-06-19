@@ -117,6 +117,7 @@ function showColorPanel(targetEl) {
   `;
 
   document.body.appendChild(panel);
+  targetEl.style.outline = '4px solid #FF4500'; // パネル表示中は赤枠を維持
 
   const picker = document.getElementById('mycolor-picker');
   const hexLabel = document.getElementById('mycolor-hex');
@@ -301,7 +302,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       });
       sendResponse({ issues: issues });
     });
-    
+    return true; // 非同期応答はGET_ISSUESの時だけ約束する
   }
 
   if (message.type === 'FOCUS_ELEMENT') {
@@ -314,7 +315,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
   if (message.type === 'UNFOCUS_ELEMENT') {
     const el = highlights[message.index];
-    if (el) {
+    const panelOpen = document.getElementById('mycolor-panel');
+    if (el && !panelOpen) {
       el.style.outline = '3px solid #FFD700';
     }
   }
@@ -326,8 +328,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       showColorPanel(el);
     }
   }
-
-  return true;
 });
 
 } // end else
