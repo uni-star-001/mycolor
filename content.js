@@ -61,7 +61,23 @@ applySavedColors().then(function() {
 // 動的コンテンツ対応（SPA等）
 let debounceTimer = null;
 
-const observer = new MutationObserver(function() {
+const observer = new MutationObserver(function(mutations) {
+  // 色変更パネル自体の追加・変更、またはパネル内部の変化は無視する
+  const isPanelRelated = mutations.every(function(m) {
+    // ケース1: 変化のtargetがパネル内部
+    if (m.target.closest && m.target.closest('#mycolor-panel')) return true;
+    // ケース2: 追加・削除されたノードがパネル自体
+    const addedIsPanel = Array.from(m.addedNodes).some(function(n) {
+      return n.id === 'mycolor-panel';
+    });
+    const removedIsPanel = Array.from(m.removedNodes).some(function(n) {
+      return n.id === 'mycolor-panel';
+    });
+    return addedIsPanel || removedIsPanel;
+  });
+
+  if (isPanelRelated) return; // パネル関連の変化は無視
+
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(function() {
     runScan();
