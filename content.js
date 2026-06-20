@@ -5,6 +5,7 @@ if (window.location.hostname === 'uni-star-001.github.io') {
 let highlights = [];
 let isEnabled = true;
 let isScanning = false;
+let lastIssuesCache = null; // 直近のスキャン結果をキャッシュ
 let appliedElements = []; // 適用済み要素を記録
 
 function runScan() {
@@ -15,6 +16,7 @@ function runScan() {
 
   axe.run({ runOnly: ['color-contrast'] }).then(function(results) {
     isScanning = false;
+    lastIssuesCache = results; // キャッシュを更新
     const violations = results.violations;
     if (violations.length === 0) {
       chrome.runtime.sendMessage({ type: 'UPDATE_BADGE', count: 0 });
@@ -35,12 +37,15 @@ function runScan() {
       el.style.outlineOffset = '2px';
       highlights.push(el);
 
-      // クリックでカラーパネルを表示
-      el.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        showColorPanel(el);
-      });
+      // クリックでカラーパネルを表示（リスナーの二重登録を防止）
+      if (!el.dataset.mycolorBound) {
+        el.dataset.mycolorBound = 'true';
+        el.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          showColorPanel(el);
+        });
+      }
     });
   });
 }
@@ -292,13 +297,10 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   }
 
   if (message.type === 'GET_ISSUES') {
-    axe.run({ runOnly: ['color-contrast'] }).then(function(results) {
+    function buildIssuesFromResults(results) {
       const violations = results.violations;
-      if (violations.length === 0) {
-        sendResponse({ issues: [] });
-        return;
-      }
-      const issues = violations[0].nodes.map(function(node) {
+      if (violations.length === 0) return [];
+      return violations[0].nodes.map(function(node) {
         const el = document.querySelector(node.target[0]);
         const tagName = el ? el.tagName.toLowerCase() : 'element';
         const tagToKey = {
@@ -316,9 +318,18 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             : '基準未満'
         };
       });
-      sendResponse({ issues: issues });
-    });
-    return true; // 非同期応答はGET_ISSUESの時だけ約束する
+    }
+
+    if (isScanning && lastIssuesCache) {
+      // スキャン中はキャッシュを返してaxe.run()の二重実行を避ける
+      sendResponse({ issues: buildIssuesFromResults(lastIssuesCache) });
+    } else {
+      axe.run({ runOnly: ['color-contrast'] }).then(function(results) {
+        lastIssuesCache = results;
+        sendResponse({ issues: buildIssuesFromResults(results) });
+      });
+      return true;
+    }
   }
 
   if (message.type === 'FOCUS_ELEMENT') {
