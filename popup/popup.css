@@ -59,9 +59,9 @@ body {
 }
 
 .issue-item:hover {
-  background: #e8f0fb;
+  background: #fce8e6;
   cursor: pointer;
-  border-left: 3px solid #005BAC;
+  border-left: 3px solid #FF4500;
   padding-left: 13px;
 }
 
