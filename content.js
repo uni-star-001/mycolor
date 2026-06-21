@@ -41,8 +41,11 @@ function runScan() {
       if (!el.dataset.mycolorBound) {
         el.dataset.mycolorBound = 'true';
         el.addEventListener('click', function(e) {
+          if (!isEnabled) return;   // OFF時は通常のクリック動作を妨げない
+          if (!e.altKey) return;    // 通常クリックも本来の動作を妨げない
           e.preventDefault();
           e.stopPropagation();
+          el.style.outline = '4px solid #FF4500'; // Alt+クリックで黄色枠→赤枠に変更
           showColorPanel(el);
         });
       }
@@ -130,7 +133,8 @@ function showColorPanel(targetEl) {
       <div style="font-size:11px; color:#595959; margin-bottom:6px;">提案色（基準を満たす候補）</div>
       <div id="mycolor-suggests" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
     </div>
-    <div style="display:flex; gap:6px; margin-top:12px;">
+    <div style="font-size:10px; color:#595959; margin-top:8px;">💡 Alt+クリックでもパネルを開けます</div>
+    <div style="display:flex; gap:6px; margin-top:8px;">
       <button id="mycolor-revert" style="flex:1; padding:7px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:12px;">元に戻す</button>
       <button id="mycolor-apply" style="flex:1; padding:7px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:12px; font-weight:500;">適用して保存</button>
     </div>
