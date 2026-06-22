@@ -62,8 +62,22 @@ document.addEventListener('DOMContentLoaded', function() {
   toggle.addEventListener('change', function() {
     const enabled = toggle.checked;
     toggleLabel.textContent = enabled ? chrome.i18n.getMessage('toggleOn') : chrome.i18n.getMessage('toggleOff');
+
+    if (!enabled) {
+      issueList.innerHTML = `<p class="no-issues">${chrome.i18n.getMessage('disabledMessage')}</p>`;
+    }
+
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { type: 'TOGGLE', enabled: enabled });
+
+      if (enabled) {
+        setTimeout(function() {
+          chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_ISSUES' }, function(response) {
+            if (chrome.runtime.lastError || !response) return;
+            displayIssues(response.issues);
+          });
+        }, 600);
+      }
     });
   });
 

@@ -231,6 +231,7 @@ function showColorPanel(targetEl) {
       highlights.splice(idx, 1);
       highlightData.splice(idx, 1);
     }
+    chrome.runtime.sendMessage({ type: 'UPDATE_BADGE', count: highlights.length });
 
     // chrome.storageに保存
     const siteKey = location.hostname;
