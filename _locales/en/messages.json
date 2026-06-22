@@ -45,7 +45,7 @@
     "message": "Welcome to MyColor"
   },
   "disclaimer": {
-    "message": "・This tool is designed to make your web browsing more comfortable.\n・Areas with insufficient contrast are highlighted with a yellow border, and you can change them to colors that work best for you.\n・Color perception varies from person to person, so please use your own judgment when applying changes.\n\n⚠️ Do not use this tool for medical or safety-critical decisions."
+    "message": "・Low-contrast areas are highlighted with a yellow border\n・Alt+click a highlighted element, or use the Check Panel, to change its color\n・Your settings are saved automatically per site. They will be cleared if you clear your browser's site data\n・Color perception varies from person to person, so please use your own judgment when applying changes\n\n⚠️ Do not use this tool for medical or safety-critical decisions."
   },
   "disclaimerClose": {
     "message": "Close"
