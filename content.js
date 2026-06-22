@@ -228,7 +228,7 @@ function showColorPanel(targetEl) {
 
   // 適用して保存
   document.getElementById('mycolor-apply').addEventListener('click', function() {
-    targetEl.style.outline = '2px dashed #1D9E75';
+    targetEl.style.outline = '2px dashed #005BAC';
     targetEl.style.outlineOffset = '2px';
     appliedElements.push(targetEl); // 適用済みリストに追加
 
@@ -274,7 +274,7 @@ function applySavedColors() {
         const el = document.querySelector(selector);
         if (el) {
           el.style.color = siteData[selector].color;
-          el.style.outline = '2px dashed #1D9E75';
+          el.style.outline = '2px dashed #005BAC';
           el.style.outlineOffset = '2px';
           appliedElements.push(el);
         }
