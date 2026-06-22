@@ -34,6 +34,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 現在のタブに問題一覧をリクエスト
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    // トグルの現在状態を取得して反映
+    chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_STATE' }, function(stateResponse) {
+      if (chrome.runtime.lastError || !stateResponse) return;
+      toggle.checked = stateResponse.enabled;
+      toggleLabel.textContent = stateResponse.enabled
+        ? chrome.i18n.getMessage('toggleOn')
+        : chrome.i18n.getMessage('toggleOff');
+    });
+
     chrome.tabs.sendMessage(tabs[0].id, { type: 'CHECK_PANEL_OPEN' }, function(panelResponse) {
       if (panelResponse && panelResponse.panelOpen) {
         issueList.innerHTML = `<p class="no-issues">${chrome.i18n.getMessage('panelOpenWarning')}</p>`;

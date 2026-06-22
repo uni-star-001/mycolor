@@ -225,6 +225,13 @@ function showColorPanel(targetEl) {
     targetEl.style.outlineOffset = '2px';
     appliedElements.push(targetEl); // 適用済みリストに追加
 
+    // highlights[] と highlightData[] から除外してチェックパネルの一覧と同期
+    const idx = highlights.indexOf(targetEl);
+    if (idx !== -1) {
+      highlights.splice(idx, 1);
+      highlightData.splice(idx, 1);
+    }
+
     // chrome.storageに保存
     const siteKey = location.hostname;
     chrome.storage.sync.get(siteKey, function(data) {
@@ -325,7 +332,13 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       runScan();
     } else {
       clearHighlights();
+      chrome.runtime.sendMessage({ type: 'UPDATE_BADGE', count: 0 });
     }
+  }
+
+  if (message.type === 'GET_STATE') {
+    sendResponse({ enabled: isEnabled });
+    return true;
   }
 
   if (message.type === 'GET_ISSUES') {
