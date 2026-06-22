@@ -53,7 +53,7 @@ function runScan() {
         name: typeLabel,
         ratio: node.any[0]?.data?.contrastRatio
           ? node.any[0].data.contrastRatio.toFixed(1) + ':1'
-          : '基準未満'
+          : chrome.i18n.getMessage('belowStandard')
       });
 
       // クリックでカラーパネルを表示（リスナーの二重登録を防止）
@@ -157,21 +157,21 @@ function showColorPanel(targetEl) {
   `;
 
   panel.innerHTML = `
-    <div style="font-weight:500; margin-bottom:4px;">色を変更</div>
-    <div style="font-size:11px; color:#595959; margin-bottom:12px;">対象：${targetEl.tagName.toLowerCase()}</div>
+    <div style="font-weight:500; margin-bottom:4px;">${chrome.i18n.getMessage('panelTitle')}</div>
+    <div style="font-size:11px; color:#595959; margin-bottom:12px;">${chrome.i18n.getMessage('panelTarget')}${targetEl.tagName.toLowerCase()}</div>
     <div style="margin-bottom:10px;">
-      <div style="font-size:11px; color:#595959; margin-bottom:4px;">色を選ぶ</div>
+      <div style="font-size:11px; color:#595959; margin-bottom:4px;">${chrome.i18n.getMessage('panelColorLabel')}</div>
       <input type="color" id="mycolor-picker" style="width:36px; height:36px; border:none; cursor:pointer; border-radius:6px;">
       <span id="mycolor-hex" style="margin-left:8px; font-size:12px; color:#595959;"></span>
     </div>
     <div style="margin-bottom:12px;">
-      <div style="font-size:11px; color:#595959; margin-bottom:6px;">提案色（基準を満たす候補）</div>
+      <div style="font-size:11px; color:#595959; margin-bottom:6px;">${chrome.i18n.getMessage('panelSuggestLabel')}</div>
       <div id="mycolor-suggests" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
     </div>
-    <div style="font-size:10px; color:#595959; margin-top:8px;">💡 Alt+クリックでもパネルを開けます</div>
+    <div style="font-size:10px; color:#595959; margin-top:8px;">${chrome.i18n.getMessage('altClickHint')}</div>
     <div style="display:flex; gap:6px; margin-top:8px;">
-      <button id="mycolor-revert" style="flex:1; padding:7px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:12px;">元に戻す</button>
-      <button id="mycolor-apply" style="flex:1; padding:7px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:12px; font-weight:500;">適用して保存</button>
+      <button id="mycolor-revert" style="flex:1; padding:7px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:12px;">${chrome.i18n.getMessage('panelRevert')}</button>
+      <button id="mycolor-apply" style="flex:1; padding:7px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:12px; font-weight:500;">${chrome.i18n.getMessage('panelApply')}</button>
     </div>
     <button id="mycolor-close" style="position:absolute; top:10px; right:10px; background:none; border:none; cursor:pointer; font-size:16px; color:#888;">×</button>
   `;

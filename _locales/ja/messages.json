@@ -26,6 +26,8 @@
   "resetSite": {
     "message": "このサイトの設定をリセット"
   },
+  "panelTarget": { "message": "対象：" },
+  "altClickHint": { "message": "💡 Alt+クリックでもパネルを開けます" },
   "panelTitle": {
     "message": "色を変更"
   },
@@ -52,6 +54,7 @@
   },
   "disabledMessage": { "message": "MyColorはOFFです" },
   "panelOpenWarning": { "message": "色変更パネルを閉じてから操作してください" },
+  "belowStandard": { "message": "基準未満" },
   "elementText": { "message": "テキスト" },
   "elementLink": { "message": "リンク" },
   "elementButton": { "message": "ボタン" },

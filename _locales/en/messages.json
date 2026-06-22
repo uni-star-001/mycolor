@@ -26,6 +26,8 @@
   "resetSite": {
     "message": "Reset settings for this site"
   },
+  "panelTarget": { "message": "Target: " },
+  "altClickHint": { "message": "💡 Alt+click any highlighted element to open this panel" },
   "panelTitle": {
     "message": "Change color"
   },
@@ -52,6 +54,7 @@
   },
   "disabledMessage": { "message": "MyColor is OFF" },
   "panelOpenWarning": { "message": "Please close the color panel first" },
+  "belowStandard": { "message": "Below standard" },
   "elementText": { "message": "Text" },
   "elementLink": { "message": "Link" },
   "elementButton": { "message": "Button" },
