@@ -3,10 +3,11 @@ if (window.location.hostname === 'uni-star-001.github.io') {
 } else {
 
 let highlights = [];
+let highlightData = []; // highlights[] と対になる問題データ（インデックス同期）
 let isEnabled = true;
 let isScanning = false;
-let lastIssuesCache = null; // 直近のスキャン結果をキャッシュ
 let appliedElements = []; // 適用済み要素を記録
+let currentPanelTarget = null; // Alt+クリックで開いた対象要素を記録
 
 function runScan() {
   if (!isEnabled) return;
@@ -28,6 +29,14 @@ function runScan() {
     // バッジに件数を送信
     chrome.runtime.sendMessage({ type: 'UPDATE_BADGE', count: nodes.length });
 
+    const tagToKey = {
+      'p': 'elementText', 'span': 'elementText', 'div': 'elementText',
+      'a': 'elementLink', 'button': 'elementButton', 'input': 'elementInput',
+      'h1': 'elementHeading', 'h2': 'elementHeading', 'h3': 'elementHeading',
+      'h4': 'elementHeading', 'h5': 'elementHeading', 'h6': 'elementHeading',
+      'label': 'elementLabel', 'li': 'elementListItem'
+    };
+
     nodes.forEach(function(node) {
       const el = document.querySelector(node.target[0]);
       if (!el) return;
@@ -36,6 +45,16 @@ function runScan() {
       el.style.outline = '3px solid #FFD700';
       el.style.outlineOffset = '2px';
       highlights.push(el);
+
+      // highlights[] と同期したインデックスで問題データを保存
+      const tagName = el.tagName.toLowerCase();
+      const typeLabel = chrome.i18n.getMessage(tagToKey[tagName] || 'elementText');
+      highlightData.push({
+        name: typeLabel,
+        ratio: node.any[0]?.data?.contrastRatio
+          ? node.any[0].data.contrastRatio.toFixed(1) + ':1'
+          : '基準未満'
+      });
 
       // クリックでカラーパネルを表示（リスナーの二重登録を防止）
       if (!el.dataset.mycolorBound) {
@@ -59,6 +78,7 @@ function clearHighlights() {
     el.style.outlineOffset = '';
   });
   highlights = [];
+  highlightData = [];
 }
 
 // 保存済み設定を自動適用してからスキャン
@@ -102,6 +122,14 @@ function showColorPanel(targetEl) {
   // 既存のパネルを削除
   const existing = document.getElementById('mycolor-panel');
   if (existing) existing.remove();
+
+  // 直前の対象要素の赤枠を黄色に戻す
+  if (currentPanelTarget && currentPanelTarget !== targetEl) {
+    if (highlights.includes(currentPanelTarget)) {
+      currentPanelTarget.style.outline = '3px solid #FFD700';
+    }
+  }
+  currentPanelTarget = targetEl;
 
   const panel = document.createElement('div');
   panel.id = 'mycolor-panel';
@@ -301,39 +329,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   }
 
   if (message.type === 'GET_ISSUES') {
-    function buildIssuesFromResults(results) {
-      const violations = results.violations;
-      if (violations.length === 0) return [];
-      return violations[0].nodes.map(function(node) {
-        const el = document.querySelector(node.target[0]);
-        const tagName = el ? el.tagName.toLowerCase() : 'element';
-        const tagToKey = {
-          'p': 'elementText', 'span': 'elementText', 'div': 'elementText',
-          'a': 'elementLink', 'button': 'elementButton', 'input': 'elementInput',
-          'h1': 'elementHeading', 'h2': 'elementHeading', 'h3': 'elementHeading',
-          'h4': 'elementHeading', 'h5': 'elementHeading', 'h6': 'elementHeading',
-          'label': 'elementLabel', 'li': 'elementListItem'
-        };
-        const typeLabel = chrome.i18n.getMessage(tagToKey[tagName] || 'elementText');
-        return {
-          name: typeLabel,
-          ratio: node.any[0]?.data?.contrastRatio
-            ? node.any[0].data.contrastRatio.toFixed(1) + ':1'
-            : '基準未満'
-        };
-      });
-    }
-
-    if (isScanning && lastIssuesCache) {
-      // スキャン中はキャッシュを返してaxe.run()の二重実行を避ける
-      sendResponse({ issues: buildIssuesFromResults(lastIssuesCache) });
-    } else {
-      axe.run({ runOnly: ['color-contrast'] }).then(function(results) {
-        lastIssuesCache = results;
-        sendResponse({ issues: buildIssuesFromResults(results) });
-      });
-      return true;
-    }
+    // highlights[] と highlightData[] は常に同期しているため直接返す
+    sendResponse({ issues: highlightData });
   }
 
   if (message.type === 'FOCUS_ELEMENT') {

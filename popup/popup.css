@@ -33,9 +33,41 @@ body {
 }
 
 .toggle-wrap input {
-  width: 36px;
-  height: 20px;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 48px;
+  height: 26px;
+  background: #ccc;
+  border-radius: 13px;
   cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  outline: none;
+}
+
+.toggle-wrap input::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: left 0.2s;
+}
+
+.toggle-wrap input:checked {
+  background: #005BAC;
+}
+
+.toggle-wrap input:checked::after {
+  left: 25px;
+}
+
+.toggle-wrap input:focus-visible {
+  box-shadow: 0 0 0 2px #005BAC;
 }
 
 .toggle-label {
