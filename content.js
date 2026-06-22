@@ -105,6 +105,7 @@ const observer = new MutationObserver(function(mutations) {
   });
 
   if (isPanelRelated) return; // パネル関連の変化は無視
+  if (document.visibilityState === 'hidden') return; // バックグラウンドタブはスキップ
 
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(function() {
@@ -115,6 +116,12 @@ const observer = new MutationObserver(function(mutations) {
 observer.observe(document.body, {
   childList: true,
   subtree: true
+});
+
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible' && isEnabled) {
+    runScan();
+  }
 });
 
 // カラーパネルの表示
