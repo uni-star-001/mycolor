@@ -8,6 +8,7 @@ let isEnabled = true;
 let isScanning = false;
 let appliedElements = []; // 適用済み要素を記録
 let currentPanelTarget = null; // Alt+クリックで開いた対象要素を記録
+let lastIssuesCache = null;
 
 function runScan() {
   if (!isEnabled) return;
@@ -271,7 +272,13 @@ function applySavedColors() {
     chrome.storage.sync.get(siteKey, function(data) {
       const siteData = data[siteKey] || {};
       Object.keys(siteData).forEach(function(selector) {
-        const el = document.querySelector(selector);
+        let el;
+        try {
+          el = document.querySelector(selector);
+        } catch(e) {
+          console.warn('MyColor: invalid selector skipped:', selector);
+          return;
+        }
         if (el) {
           el.style.color = siteData[selector].color;
           el.style.outline = '2px dashed #005BAC';
